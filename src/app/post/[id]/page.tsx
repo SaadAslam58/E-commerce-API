@@ -14,7 +14,7 @@ type Post = {
   description: string;
   stock: number;
   rating: number;
-  quantity: number; // Adding quantity field
+  quantity: number;
 };
 
 const ProductPage: React.FC = () => {
@@ -29,10 +29,17 @@ const ProductPage: React.FC = () => {
       const fetchData = async () => {
         try {
           const response = await fetch(`https://fakestoreapi.com/products/${id}`);
+          if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+          }
           const data = await response.json();
-          setProduct({ ...data, quantity: 1 }); 
-        } catch {
-          setError('Failed to fetch product data');
+          setProduct({ ...data, quantity: 1 });
+        } catch (error) {
+          if (error instanceof Error) {
+            setError('Failed to fetch product data. ' + error.message);
+          } else {
+            setError('Failed to fetch product data.');
+          }
         }
       };
 
@@ -90,8 +97,7 @@ const ProductPage: React.FC = () => {
 
   return (
     <div>
-      
-      <div className='w-full h-screen lg:h-screen flex  justify-center items-center'>
+      <div className='w-full h-screen lg:h-screen flex justify-center items-center'>
         <div className='flex flex-col md:flex-col lg:flex-row w-[90%] justify-center items-center'>
           <div className='w-[40%]'>
             <Image
@@ -122,21 +128,20 @@ const ProductPage: React.FC = () => {
             </div>
             <ul>
               {cart.map((item) => (
-                <li key={item.id} className=' mb-4 flex lg:flex-row flex-col justify-between items-center'>
+                <li key={item.id} className='mb-4 flex lg:flex-row flex-col justify-between items-center'>
                   <div className='flex flex-col justify-center items-center'>
-                    <Image 
-                      src={item.image} 
-                      alt={item.title} 
-                      height={50} 
-                      width={50} 
-                    
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      height={50}
+                      width={50}
                     />
                     <span className='ml-4'>Quantity: {item.quantity}</span>
                     <span>${item.price}</span>
                   </div>
                   <div className='flex gap-x-1 items-center'>
-                    <Button className='lg:py-1 py-[3px]  lg:px-3 px-2 ' onClick={() => increaseQuantity(item.id)}>+</Button>
-                    <Button className='lg:py-1 py-[3px]  lg:px-3 px-2 ' onClick={() => decreaseQuantity(item.id)}>-</Button>
+                    <Button className='lg:py-1 py-[3px] lg:px-3 px-2' onClick={() => increaseQuantity(item.id)}>+</Button>
+                    <Button className='lg:py-1 py-[3px] lg:px-3 px-2' onClick={() => decreaseQuantity(item.id)}>-</Button>
                     <Button onClick={() => removeFromCart(item.id)}>Remove</Button>
                   </div>
                 </li>

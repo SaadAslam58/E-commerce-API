@@ -55,6 +55,7 @@ export default function RootLayout({
       updatedCart = [...cart, { ...product, quantity: 1 }];
     }
     setCart(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
   const increaseQuantity = (productId: number) => {
@@ -62,6 +63,7 @@ export default function RootLayout({
       item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
     );
     setCart(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
   const decreaseQuantity = (productId: number) => {
@@ -70,23 +72,13 @@ export default function RootLayout({
         ? { ...item, quantity: item.quantity - 1 } : item
     );
     setCart(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
   const removeFromCart = (productId: number) => {
     const updatedCart = cart.filter(item => item.id !== productId);
     setCart(updatedCart);
-  };
-
-  const sampleProduct: Post = {
-    id: 1,
-    title: "Sample Product",
-    image: "path_to_image",
-    price: 99.99,
-    category: "Sample Category",
-    description: "This is a sample product",
-    stock: 10,
-    rating: 4.5,
-    quantity: 1,
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
   return (

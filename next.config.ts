@@ -6,4 +6,6 @@ const nextConfig: NextConfig = {
   },
 };
 
+console.log("Next.js configuration applied:", nextConfig);
+
 export default nextConfig;
