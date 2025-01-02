@@ -73,6 +73,6 @@ const Sec1 = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Sec1;
