@@ -16,6 +16,7 @@ export const Extras = () => {
           setData(JSON.parse(cachedData));
         } else {
           const response = await fetch('https://fakestoreapi.com/products?limit=8');
+          if (!response.ok) throw new Error('Network response was not ok');
           const result = await response.json();
           localStorage.setItem('products', JSON.stringify(result));
           setData(result);
